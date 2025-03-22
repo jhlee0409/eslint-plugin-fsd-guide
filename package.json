@@ -1,0 +1,35 @@
+{
+  "name": "eslint-plugin-fsd-guide",
+  "version": "1.0.0",
+  "description": "ESLint plugin for Feature-Sliced Design architecture",
+  "main": "index.js",
+  "author": "JaeHyeok Lee <relee6203@gmail.com>",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "fsd",
+    "feature-sliced-design"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhlee0409/eslint-plugin-fsd-guide.git"
+  },
+  "files": [
+    "index.js",
+    "presets",
+    "rules",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1"
+  },
+  "peerDependencies": {
+    "eslint": ">=7.0.0",
+    "eslint-plugin-import": ">=2.25.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
