@@ -63,7 +63,7 @@ module.exports = {
       default:
         layerOrder = [
           "app",
-          "views",
+          "pages",
           "widgets",
           "features",
           "entities",

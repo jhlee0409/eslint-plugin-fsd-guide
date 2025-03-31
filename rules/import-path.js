@@ -39,9 +39,6 @@ module.exports = {
           "features",
           "entities",
           "shared",
-          "components",
-          "lib",
-          "styles",
         ];
         break;
       case "react":
@@ -52,9 +49,6 @@ module.exports = {
           "features",
           "entities",
           "shared",
-          "components",
-          "hooks",
-          "utils",
         ];
         break;
       case "vanilla":
@@ -71,7 +65,7 @@ module.exports = {
       default:
         layerPatterns = [
           "app",
-          "views",
+          "pages",
           "widgets",
           "features",
           "entities",
