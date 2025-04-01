@@ -1,45 +1,64 @@
-import fsdDefaultConfig from '../../presets/fsd-default'
+import fsdDefaultPresetConfig from '../../presets/fsd-default'
 import { ImportOrderConfig } from '../../types'
 
 describe('fsd-default preset', () => {
-  it('should have correct import order configuration', () => {
-    // fsd-default 프리셋 구성 확인
-    const config: ImportOrderConfig = fsdDefaultConfig
-
-    // 그룹 기본 구조 확인 (정확한 구조는 바뀔 수 있음)
-    expect(config.groups).toContain('builtin')
-    expect(config.groups).toContain('external')
-    expect(config.groups).toContain('internal')
-    // parent와 sibling은 배열로 묶여 있을 수 있음
-    const hasParentSibling = config.groups.some(group =>
-      Array.isArray(group) && group.includes('parent') && group.includes('sibling')
+  it('should have correct configuration', () => {
+    // Verify fsd-default preset configuration
+    expect(fsdDefaultPresetConfig).toBeDefined()
+    expect(fsdDefaultPresetConfig['newlines-between']).toBe('always')
+    expect(fsdDefaultPresetConfig.alphabetize).toEqual(
+      expect.objectContaining({
+        order: 'asc',
+        caseInsensitive: true
+      })
     )
-    expect(hasParentSibling).toBe(true)
-    expect(config.groups).toContain('index')
-    expect(config.groups).toContain('object')
-    expect(config.groups).toContain('type')
 
-    // FSD 레이어 pathGroups 확인
-    expect(config.pathGroups.length).toBeGreaterThan(0)
+    // Check base group structure (exact structure may change)
+    expect(fsdDefaultPresetConfig.groups).toEqual(
+      expect.arrayContaining([
+        'builtin',
+        'external',
+        'internal',
+        // parent and sibling may be grouped in an array
+        expect.arrayContaining(['parent', 'sibling']),
+        'object',
+        'type',
+        'index'
+      ])
+    )
 
-    // 주요 레이어 패턴 확인
-    const patterns = config.pathGroups.map(g => g.pattern)
-    expect(patterns).toContain('@/app/**')
-    expect(patterns).toContain('@/pages/**')
-    expect(patterns).toContain('@/widgets/**')
-    expect(patterns).toContain('@/features/**')
-    expect(patterns).toContain('@/entities/**')
-    expect(patterns).toContain('@/shared/**')
+    // Check FSD layer pathGroups
+    expect(fsdDefaultPresetConfig.pathGroups).toBeDefined()
+    expect(fsdDefaultPresetConfig.pathGroups.length).toBeGreaterThan(0)
 
-    // 모든 pathGroup에 대해 internal 그룹과 before 위치 확인
-    config.pathGroups.forEach(group => {
+    // Check major layer patterns
+    const pathPatterns = fsdDefaultPresetConfig.pathGroups.map(group => group.pattern)
+    expect(pathPatterns).toEqual(
+      expect.arrayContaining([
+        '@/app/**',
+        '@/pages/**',
+        '@/widgets/**',
+        '@/features/**',
+        '@/entities/**',
+        '@/shared/**'
+      ])
+    )
+
+    // Check that all pathGroups have internal group and before position
+    for (const group of fsdDefaultPresetConfig.pathGroups) {
       expect(group.group).toBe('internal')
       expect(group.position).toBe('before')
-    })
+    }
 
-    // 올바른 순서로 정렬되어 있는지 확인
-    expect(config['newlines-between']).toBe('always')
-    expect(config.alphabetize?.order).toBe('asc')
-    expect(config.alphabetize?.caseInsensitive).toBe(true)
+    // Verify correct ordering
+    const layerOrder = ['app', 'pages', 'widgets', 'features', 'entities', 'shared']
+    const pathGroupsOrder = fsdDefaultPresetConfig.pathGroups.map(g => {
+      const match = g.pattern.match(/@\/([^/]+)\/\*\*/)
+      return match ? match[1] : null
+    }).filter(Boolean)
+
+    for (let i = 0; i < layerOrder.length; i++) {
+      expect(pathGroupsOrder[i]).toBe(layerOrder[i])
+    }
   })
 })
